@@ -2,18 +2,71 @@
   <div id="app">
     <div class="header">
       <header class="text-center">
-        <h3>Nome da aplicação</h3>
-        <select name id v-model="layerSelect" @change="selectLayer($event)" class="form-control">
-          <option selected value="0">Selecione uma camada para visualização</option>
-          <option value="1">Temperatura da superfície da terra (LST)</option>
-          <option value="2">Índice de vegetação</option>
-        </select>
+        <nav class="navbar navbar-expand-lg">
+          <a class="navbar-brand text-white" href="#">TELLUS</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item active">
+                <a class="nav-link text-white" href="#">Globo<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="#">Gráficos</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link text-white" href="#">Quem somos?</a>
+              </li>
+            </ul>
+            <span class="navbar-text">
+              Cadastrar ocorrência
+            </span>
+          </div>
+        </nav>
+       
       </header>
     </div>
 
-    <div class="container-nasa">
+    <div class="container pt-2">
+      <div class="row content-center">
+        <div class="col-3"></div>
+        <div class="col-6">
+          <h6 class="text-center text-white">Selecione uma camada para visualização</h6>
+          <select name id v-model="layerSelect" @change="selectLayer($event)" class="form-control">
+            <option value="1">Temperatura da superfície da terra (LST)</option>
+            <option value="2">Índice de vegetação</option>
+          </select>
+          <h5 class="text-white text-center pt-4">Visualize ocorrências ao redor do Planeta Terra</h5>
+        </div>
+        <div class="col-3"></div>
+      </div>
+    </div>
+    
+
+    <div class="container-fluid container-nasa pt-2">
       <div class="globo">
         <canvas id="canvasOne" width="600" height="800">Your browser does not support HTML5 Canvas.</canvas>
+      </div>
+
+
+
+      <div class="card border-white" style="background-color: black">
+        <div class="card-header text-white" style="background-color: #7A04D4" >
+          <h4>Detalhes</h4>
+        </div>
+        <img src="../public/imgs/desmatamento.png" class="card-img-top" alt="#">
+        <div class="card-body">
+           <h5 class="text-white">Informações</h5>
+           <hr style="background-color:white;">
+           <p class="text-white">
+             Temperatura:<br>
+             Índice de vegetação:<br>
+             Data:
+           </p>
+           <h5 class="text-white">Ocorrências</h5>
+           <hr style="background-color:white;">
+        </div>
       </div>
 
       <div class="card-nasa" v-show="this.clickMap">
@@ -103,6 +156,7 @@ export default {
   },
 
   mounted() {
+    
     this.wwd = new worldwind.WorldWindow("canvasOne");
 
     var layers = [
@@ -130,6 +184,7 @@ export default {
   },
 
   methods: {
+
     getApi() {
       axios
         .get(`https://api.jsonbin.io/b/5dabe6f645e66e5713fb45a8`)
@@ -161,7 +216,7 @@ export default {
 
 
       placemarkAttributes.imageSource = require("./assets/images/marker.png");
-alert(WorldWind.configuration.baseUrl)
+
       var position = new WorldWind.Position(-3.092002, -59.945043000000005, 100.0);
       var placemark = new WorldWind.Placemark(
         position,
@@ -207,6 +262,13 @@ alert(WorldWind.configuration.baseUrl)
           }
         });
       });
+    },
+
+    eventTab(event){
+     
+      e.preventDefault()
+      $(this).tab('show')
+ 
     },
 
     buildMarker() {
@@ -262,7 +324,7 @@ alert(WorldWind.configuration.baseUrl)
 }
 
 .header {
-  background-color: #7f66d4;
+  background-color: #7A04D4;
   color: #ffffff;
 }
 
@@ -313,11 +375,19 @@ alert(WorldWind.configuration.baseUrl)
 
 .card-nasa .card-titulo {
   text-align: center;
-  background-color: #7f66d4;
+  background-color: #7A04D4;
 }
 
 .card-titulo * {
   margin: 0;
+}
+
+.card{
+  width: 25rem;
+}
+
+.card-header{
+  background-color:#7A04D4;
 }
 
 h3 {
