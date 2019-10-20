@@ -4,13 +4,24 @@
       <header class="text-center">
         <nav class="navbar navbar-expand-lg">
           <a class="navbar-brand text-white" href="#">TELLUS</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-toggle="collapse"
+            data-target="#navbarText"
+            aria-controls="navbarText"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
-                <a class="nav-link text-white" href="#">Globo<span class="sr-only">(current)</span></a>
+                <a class="nav-link text-white" href="#">
+                  Globo
+                  <span class="sr-only">(current)</span>
+                </a>
               </li>
               <li class="nav-item">
                 <a class="nav-link text-white" href="#">Gráficos</a>
@@ -19,115 +30,95 @@
                 <a class="nav-link text-white" href="#">Quem somos?</a>
               </li>
             </ul>
-            <span class="navbar-text">
-              Cadastrar ocorrência
-            </span>
+            <span class="navbar-text">Cadastrar ocorrência</span>
           </div>
         </nav>
-       
       </header>
     </div>
 
     <div class="container pt-2">
       <div class="row content-center">
-        <div class="col-3"></div>
-        <div class="col-6">
-          <h6 class="text-center text-white">Selecione uma camada para visualização</h6>
-          <select name id v-model="layerSelect" @change="selectLayer($event)" class="form-control">
-            <option value="1">Temperatura da superfície da terra (LST)</option>
-            <option value="2">Índice de vegetação</option>
-          </select>
-          <h5 class="text-white text-center pt-4">Visualize ocorrências ao redor do Planeta Terra</h5>
-        </div>
-        <div class="col-3"></div>
+        <h6 class="text-center text-white">Selecione uma camada para visualização</h6>
+        <select name id v-model="layerSelect" @change="selectLayer($event)" class="form-control">
+          <option value="1">Temperatura da superfície da terra (LST)</option>
+          <option value="2">Índice de vegetação</option>
+        </select>
+        <h5 class="text-white text-center pt-4">Visualize ocorrências ao redor do Planeta Terra</h5>
       </div>
     </div>
-    
 
     <div class="container-fluid container-nasa pt-2">
       <div class="globo">
         <canvas id="canvasOne" width="600" height="800">Your browser does not support HTML5 Canvas.</canvas>
       </div>
 
-
-
       <div class="card border-white" style="background-color: black" v-show="this.clickMap">
-        <div class="card-header text-white" style="background-color: #7A04D4" >
+        <div class="card-header text-white" style="background-color: #7A04D4">
           <h4>Detalhes</h4>
         </div>
-        <img src="../public/imgs/desmatamento.png" class="card-img-top" alt="#">
+        <img src="../public/imgs/desmatamento.png" class="card-img-top" alt="#" />
         <div class="card-body">
-           <h5 class="text-white">Informações</h5>
-           <hr style="background-color:white;">
-           <p class="text-white">
-             Temperatura:<br>
-             Índice de vegetação:<br>
-             Data:
-           </p>
-           <h5 class="text-white">Ocorrências</h5>
-           <hr style="background-color:white;">
+          <div v-for="infor in informations" :key="infor.id">
+            <div class="card-titulo">
+              <h1>Amazonas</h1>
+            </div>
+            <div class="info">
+              <label>Temperatura atual</label>
+              <h3>
+                {{infor.temperature}}
+                <hr />
+              </h3>
+            </div>
+
+            <div class="info">
+              <label>Mudanças na temperatura</label>
+              <div v-for="inforTemp in infor.temperature_historic" :key="inforTemp.id">
+                <h3>{{inforTemp.value}}° em {{inforTemp.data_create}}</h3>
+              </div>
+              <hr />
+            </div>
+
+            <div class="info">
+              <label>Taxa de vegetação atual</label>
+              <h3>
+                {{infor.vegetation_rate}}%
+                <hr />
+              </h3>
+            </div>
+
+            <div class="info">
+              <label>Mudanças na taxa da vegetação</label>
+              <div v-for="inforVeg in infor.vegetation_rate_historic" :key="inforVeg.id">
+                <h3>{{inforVeg.value}}% em {{inforVeg.data_create}}</h3>
+              </div>
+              <hr />
+            </div>
+
+            <div class="info">
+              <label>Taxa de incidência populacional atual</label>
+              <h3>
+                {{infor.population_incident}}%
+                <hr />
+              </h3>
+            </div>
+
+            <div class="info">
+              <label>Mudanças na taxa de incidência populacional</label>
+              <div v-for="inforInc in infor.population_incident_historic" :key="inforInc.id">
+                <h3>{{inforInc.value}}% em {{inforInc.data_create}}</h3>
+              </div>
+              <hr />
+            </div>
+
+            <h3>Ocorrencias</h3>
+            <ul>
+              <li>EX1</li>
+            </ul>
+          </div>
         </div>
       </div>
 
-      <div class="card-nasa" v-show="false">
-        <div v-for="infor in informations" :key="infor.id">
-          <div class="card-titulo">
-            <h1>{{infor.location_name}}</h1>
-          </div>
-          <div class="info">
-            <label>Temperatura atual</label>
-            <h3>
-              {{infor.temperature}}
-              <hr />
-            </h3>
-          </div>
-
-          <div class="info">
-            <label>Mudanças na temperatura</label>
-            <div v-for="inforTemp in infor.temperature_historic" :key="inforTemp.id">
-              <h3>{{inforTemp.value}}° em {{inforTemp.data_create}}</h3>
-            </div>
-            <hr />
-          </div>
-
-          <div class="info">
-            <label>Taxa de vegetação atual</label>
-            <h3>
-              {{infor.vegetation_rate}}%
-              <hr />
-            </h3>
-          </div>
-
-          <div class="info">
-            <label>Mudanças na taxa da vegetação</label>
-            <div v-for="inforVeg in infor.vegetation_rate_historic" :key="inforVeg.id">
-              <h3>{{inforVeg.value}}% em {{inforVeg.data_create}}</h3>
-            </div>
-            <hr />
-          </div>
-
-          <div class="info">
-            <label>Taxa de incidência populacional atual</label>
-            <h3>
-              {{infor.population_incident}}%
-              <hr />
-            </h3>
-          </div>
-
-          <div class="info">
-            <label>Mudanças na taxa de incidência populacional</label>
-            <div v-for="inforInc in infor.population_incident_historic" :key="inforInc.id">
-              <h3>{{inforInc.value}}% em {{inforInc.data_create}}</h3>
-            </div>
-            <hr />
-          </div>
-
-          <h3>Ocorrencias</h3>
-          <ul>
-            <li>EX1</li>
-          </ul>
-        </div>
-      </div>
+      <div class="card-nasa" v-show="false"></div>
     </div>
   </div>
 </template>
@@ -156,7 +147,6 @@ export default {
   },
 
   mounted() {
-    
     this.wwd = new worldwind.WorldWindow("canvasOne");
 
     var layers = [
@@ -178,13 +168,12 @@ export default {
       this.wwd.addLayer(layers[l].layer);
     }
 
-    this.markerDefault(this.wwd)
+    this.markerDefault(this.wwd);
 
-    this.clickMarker(this.wwd)
+    this.clickMarker(this.wwd);
   },
 
   methods: {
-
     getApi() {
       axios
         .get(`https://api.jsonbin.io/b/5dabe6f645e66e5713fb45a8`)
@@ -214,10 +203,13 @@ export default {
         1.0
       );
 
-
       placemarkAttributes.imageSource = require("./assets/images/marker.png");
 
-      var position = new WorldWind.Position(-3.092002, -59.945043000000005, 100.0);
+      var position = new WorldWind.Position(
+        -3.092002,
+        -59.945043000000005,
+        100.0
+      );
       var placemark = new WorldWind.Placemark(
         position,
         false,
@@ -250,48 +242,46 @@ export default {
 
           var mapPosition = pickList.objects[0].position;
 
-
-
-
-          if ((vm.distance(mapPosition.longitude, mapPosition.latitude) == false) && (vm.clickMap == false)) {
-              wwd.goTo(
+          if (
+            vm.distance(mapPosition.longitude, mapPosition.latitude) == false &&
+            vm.clickMap == false
+          ) {
+            wwd.goTo(
               new WorldWind.Location(
                 mapPosition.latitude,
                 mapPosition.longitude
               )
-            )
-          }else if(vm.distance(mapPosition.longitude, mapPosition.latitude)){
-              wwd.goTo(
-                new WorldWind.Location(
-                  mapPosition.latitude,
-                  mapPosition.longitude
-                )
+            );
+          } else if (vm.distance(mapPosition.longitude, mapPosition.latitude)) {
+            wwd.goTo(
+              new WorldWind.Location(
+                mapPosition.latitude,
+                mapPosition.longitude
               )
-          }
-          
-          if (vm.distance(mapPosition.longitude, mapPosition.latitude)) {
-            vm.buildMarker(true)
-          } else {
-            vm.buildMarker(false)
+            );
           }
 
-          vm.getApiTemperature(mapPosition.longitude, mapPosition.latitude)
+          if (vm.distance(mapPosition.longitude, mapPosition.latitude)) {
+            vm.buildMarker(true);
+          } else {
+            vm.buildMarker(false);
+          }
+
+          vm.getApiTemperature(mapPosition.longitude, mapPosition.latitude);
 
           if (pickList.objects.length == 1 && pickList.objects[0].isTerrain) {
             var mapPosition = pickList.objects[0].position;
           }
         });
-      })
+      });
     },
 
-    eventTab(event){
-     
-      e.preventDefault()
-      $(this).tab('show')
- 
+    eventTab(event) {
+      e.preventDefault();
+      $(this).tab("show");
     },
 
-   buildMarker(valor) {
+    buildMarker(valor) {
       this.clickMap = valor;
     },
 
@@ -313,7 +303,6 @@ export default {
     radians(value) {
       return value * (Math.PI / 180);
     },
-
 
     selectLayer(event) {
       var vm = this;
@@ -364,12 +353,16 @@ export default {
 }
 
 .header {
-  background-color: #7A04D4;
+  background-color: #7a04d4;
   color: #ffffff;
 }
 
 .header * {
   margin: 0;
+}
+
+.container-fluid {
+  margin-bottom: 0 !important;
 }
 
 .container-nasa {
@@ -378,9 +371,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: space-between;
   margin-bottom: 20%;
+}
+
+.row {
+  padding: 0 37%;
 }
 
 .globo {
@@ -393,7 +390,7 @@ export default {
   max-height: calc(100vh - 30px);
 }
 
-.card-nasa {
+.card {
   max-height: calc(100vh - 30px);
   width: calc(100vw - 70%);
   background-color: transparent;
@@ -404,31 +401,32 @@ export default {
   border-color: #a2a2a2f8;
 }
 
-.card-nasa * {
+.card * {
   color: #ffffff;
   padding: 10px 5px;
 }
 
-.card-nasa hr {
+.card img {
   padding: 0;
-  margin: 3px 0;
 }
 
-.card-nasa .card-titulo {
+.card hr {
+  padding: 0;
+  margin: 3px 0;
+  border-color: #ffffff;
+}
+
+.card .card-titulo {
   text-align: center;
-  background-color: #7A04D4;
+  background-color: #7a04d4;
 }
 
 .card-titulo * {
   margin: 0;
 }
 
-.card{
-  width: 25rem;
-}
-
-.card-header{
-  background-color:#7A04D4;
+.card-header {
+  background-color: #7a04d4;
 }
 
 h3 {
@@ -445,7 +443,38 @@ ul *li {
   padding: 0 5px;
 }
 
-.card-body{
+.card-body {
   overflow-y: scroll;
+  padding: 0 !important;
+}
+.card-body label {
+  padding: 0 5px;
+  margin: 0;
+}
+
+@media only screen and (max-width: 600px) {
+  .container-fluid {
+    flex-direction: column;
+  }
+
+  .row {
+    padding: 5px 50px !important;
+  }
+
+  .row h5 {
+    padding: 1rem !important;
+  }
+
+  .globo {
+    max-width: 100%;
+    width: 100%;
+  }
+  #canvasOne {
+    max-width: 100%;
+    width: 100%;
+  }
+  .card {
+    width: 100%;
+  }
 }
 </style>
