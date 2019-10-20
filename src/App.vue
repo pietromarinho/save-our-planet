@@ -51,7 +51,7 @@
 
 
 
-      <div class="card border-white" style="background-color: black">
+      <div class="card border-white" style="background-color: black" v-show="this.clickMap">
         <div class="card-header text-white" style="background-color: #7A04D4" >
           <h4>Detalhes</h4>
         </div>
@@ -69,7 +69,7 @@
         </div>
       </div>
 
-      <div class="card-nasa" v-show="this.clickMap">
+      <div class="card-nasa" v-show="false">
         <div v-for="infor in informations" :key="infor.id">
           <div class="card-titulo">
             <h1>{{infor.location_name}}</h1>
@@ -248,20 +248,40 @@ export default {
 
           let pickList = wwd.pick(wwd.canvasCoordinates(x, y));
 
-          if (pickList.objects.length == 1 && pickList.objects[0].isTerrain) {
-            var mapPosition = pickList.objects[0].position;
+          var mapPosition = pickList.objects[0].position;
 
-            wwd.goTo(
+
+
+
+          if ((vm.distance(mapPosition.longitude, mapPosition.latitude) == false) && (vm.clickMap == false)) {
+              wwd.goTo(
               new WorldWind.Location(
                 mapPosition.latitude,
                 mapPosition.longitude
               )
             )
+          }else if(vm.distance(mapPosition.longitude, mapPosition.latitude)){
+              wwd.goTo(
+                new WorldWind.Location(
+                  mapPosition.latitude,
+                  mapPosition.longitude
+                )
+              )
+          }
+          
+          if (vm.distance(mapPosition.longitude, mapPosition.latitude)) {
+            vm.buildMarker(true)
+          } else {
+            vm.buildMarker(false)
+          }
 
-            vm.buildMarker();
+          vm.getApiTemperature(mapPosition.longitude, mapPosition.latitude)
+
+          if (pickList.objects.length == 1 && pickList.objects[0].isTerrain) {
+            var mapPosition = pickList.objects[0].position;
           }
         });
-      });
+      })
     },
 
     eventTab(event){
@@ -271,9 +291,29 @@ export default {
  
     },
 
-    buildMarker() {
-      this.clickMap = !this.clickMap;
+   buildMarker(valor) {
+      this.clickMap = valor;
     },
+
+    distance(logitude, latitude) {
+      let distance = Math.acos(
+        Math.cos(this.radians(-3.092002)) *
+          Math.cos(this.radians(latitude)) *
+          Math.cos(this.radians(-59.945043000000005) - this.radians(logitude)) +
+          Math.sin(this.radians(-3.092002)) * Math.sin(this.radians(latitude))
+      );
+
+      if (distance <= 0.03118488184143756) {
+        return true;
+      }
+
+      return false;
+    },
+
+    radians(value) {
+      return value * (Math.PI / 180);
+    },
+
 
     selectLayer(event) {
       var vm = this;
@@ -340,6 +380,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 20%;
 }
 
 .globo {
@@ -402,5 +443,9 @@ ul {
 
 ul *li {
   padding: 0 5px;
+}
+
+.card-body{
+  overflow-y: scroll;
 }
 </style>
