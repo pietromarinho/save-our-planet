@@ -19,18 +19,18 @@
             <ul class="navbar-nav mr-auto">
               <li class="nav-item active">
                 <a class="nav-link text-white" href="#">
-                  Globo
+                  Globe
                   <span class="sr-only">(current)</span>
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white" href="#">Gráficos</a>
+                <a class="nav-link text-white" href="#">Graphics</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white" href="#">Quem somos?</a>
+                <a class="nav-link text-white" href="#">Who we are?</a>
               </li>
             </ul>
-            <span class="navbar-text">Cadastrar ocorrência</span>
+            <span class="navbar-text">Register occurrence</span>
           </div>
         </nav>
       </header>
@@ -38,12 +38,12 @@
 
     <div class="container pt-2">
       <div class="row content-center">
-        <h6 class="text-center text-white">Selecione uma camada para visualização</h6>
+        <h6 class="text-center text-white">Select a layer to view</h6>
         <select name id v-model="layerSelect" @change="selectLayer($event)" class="form-control">
-          <option value="1">Temperatura da superfície da terra (LST)</option>
-          <option value="2">Índice de vegetação</option>
+          <option value="1">Earth Surface Temperature (LST)</option>
+          <option value="2">Vegetation Index</option>
         </select>
-        <h5 class="text-white text-center pt-4">Visualize ocorrências ao redor do Planeta Terra</h5>
+        <h5 class="text-white text-center pt-4">View occurrences around Planet Earth</h5>
       </div>
     </div>
 
@@ -54,7 +54,7 @@
 
       <div class="card border-white" style="background-color: black" v-show="this.clickMap">
         <div class="card-header text-white" style="background-color: #7A04D4">
-          <h4>Detalhes</h4>
+          <h4>Details</h4>
         </div>
         <img src="../public/imgs/desmatamento.png" class="card-img-top" alt="#" />
         <div class="card-body">
@@ -63,7 +63,7 @@
               <h1>Amazonas</h1>
             </div>
             <div class="info">
-              <label>Temperatura atual</label>
+              <label>Current temperature</label>
               <h3>
                 {{infor.temperature}}
                 <hr />
@@ -71,15 +71,15 @@
             </div>
 
             <div class="info">
-              <label>Mudanças na temperatura</label>
+              <label>Temperature changes</label>
               <div v-for="inforTemp in infor.temperature_historic" :key="inforTemp.id">
-                <h3>{{inforTemp.value}}° em {{inforTemp.data_create}}</h3>
+                <h3>{{inforTemp.value}}° in {{inforTemp.data_create}}</h3>
               </div>
               <hr />
             </div>
 
             <div class="info">
-              <label>Taxa de vegetação atual</label>
+              <label>Current Vegetation Rate</label>
               <h3>
                 {{infor.vegetation_rate}}%
                 <hr />
@@ -87,15 +87,15 @@
             </div>
 
             <div class="info">
-              <label>Mudanças na taxa da vegetação</label>
+              <label>Vegetation rate changes</label>
               <div v-for="inforVeg in infor.vegetation_rate_historic" :key="inforVeg.id">
-                <h3>{{inforVeg.value}}% em {{inforVeg.data_create}}</h3>
+                <h3>{{inforVeg.value}}% in {{inforVeg.data_create}}</h3>
               </div>
               <hr />
             </div>
 
             <div class="info">
-              <label>Taxa de incidência populacional atual</label>
+              <label>Current population incidence rate</label>
               <h3>
                 {{infor.population_incident}}%
                 <hr />
@@ -103,17 +103,17 @@
             </div>
 
             <div class="info">
-              <label>Mudanças na taxa de incidência populacional</label>
+              <label>Changes in population incidence rate</label>
               <div v-for="inforInc in infor.population_incident_historic" :key="inforInc.id">
-                <h3>{{inforInc.value}}% em {{inforInc.data_create}}</h3>
+                <h3>{{inforInc.value}}% in {{inforInc.data_create}}</h3>
               </div>
               <hr />
             </div>
 
-            <h3>Ocorrencias</h3>
-            <ul>
-              <li>EX1</li>
-            </ul>
+            <h3>Occurrences</h3>
+            <div v-for="inforOcc in infor.occurrences" :key="inforOcc.id">
+                <h3>{{inforOcc.description}} in {{inforOcc.data_create}}</h3>
+              </div>
           </div>
         </div>
       </div>
