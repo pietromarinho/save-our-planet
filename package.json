@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@nasaworldwind/worldwind": "^0.9.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "bootstrap": "^4.3.1",
     "core-js": "^3.1.2",
     "jquery": "^3.4.1",
